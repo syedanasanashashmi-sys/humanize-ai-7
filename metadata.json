@@ -1,0 +1,8 @@
+{
+  "name": "HumanizeAI",
+  "description": "Improve the clarity, flow, tone, and readability of AI-assisted writing while preserving your original meaning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

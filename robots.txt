@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://humanize-ai-7.netlify.app/sitemap.xml

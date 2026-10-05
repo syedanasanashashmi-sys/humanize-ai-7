@@ -215,7 +215,7 @@ function jsonResponse(statusCode, payload) {
   };
 }
 
-export async function handler(event) {
+async function handleEvent(event) {
   if (event.httpMethod === "OPTIONS") {
     return jsonResponse(204, {});
   }
@@ -478,3 +478,27 @@ export async function handler(event) {
     });
   }
 }
+
+// Netlify Functions v2 entry point: adapts the Web Request into the event shape
+// used above so AI Gateway credentials are injected at runtime.
+export default async (req) => {
+  const url = new URL(req.url);
+  const headers = {};
+  req.headers.forEach((value, key) => {
+    headers[key] = value;
+  });
+
+  const event = {
+    httpMethod: req.method,
+    path: url.pathname,
+    headers,
+    body: req.method === "GET" || req.method === "HEAD" ? null : await req.text(),
+  };
+
+  const result = await handleEvent(event);
+  const noBody = result.statusCode === 204 || result.statusCode === 304;
+  return new Response(noBody ? null : result.body, {
+    status: result.statusCode,
+    headers: result.headers,
+  });
+};
